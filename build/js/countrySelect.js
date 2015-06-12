@@ -18,7 +18,9 @@
 		// Display only these countries
 		onlyCountries: [],
 		// The countries at the top of the list. Defaults to United States and United Kingdom
-		preferredCountries: [ "us", "gb" ]
+		preferredCountries: [ "us", "gb" ],
+		// The applied input will be hidden and changed with the country code, not the name.
+		preferCode: false
 	}, keys = {
 		UP: 38,
 		DOWN: 40,
@@ -95,6 +97,9 @@
 		_generateMarkup: function() {
 			// Country input
 			this.countryInput = $(this.element);
+			if (this.options.preferCode) {
+				this.countryInput.hide();
+			}
 			// containers (mostly for positioning)
 			var mainClass = "country-select";
 			if (this.options.defaultStyling) {
@@ -130,10 +135,20 @@
 			this._appendListItems(this.countries, "");
 			// Add the hidden input for the country code
 			this.countryCodeInput = $("#"+this.countryInput.attr("id")+"_code");
-			if (!this.countryCodeInput) {
+			if (!this.countryCodeInput.length) {
 				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" />');
 				this.countryCodeInput.insertAfter(this.countryInput);
 			}
+
+			// change the country name field with the country code one
+			if (this.options.preferCode) {
+				this.countryInput.hide();
+				this.countryCodeInput.attr('type', 'text');
+				var aux = this.countryInput;
+				this.countryInput = this.countryCodeInput;
+				this.countryCodeInput = aux;
+			}
+
 			// now we can grab the dropdown height, and hide it properly
 			this.dropdownHeight = this.countryList.outerHeight();
 			this.countryList.removeClass("v-hide").addClass("hide");
@@ -395,6 +410,7 @@
 			this._updateName(countryCode);
 			this.countryInput.trigger("change");
 			this.countryCodeInput.trigger("change");
+			
 			// focus the input
 			this._focus();
 		},
