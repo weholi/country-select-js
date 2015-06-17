@@ -3,6 +3,8 @@ A jQuery plugin for selecting a country, based on the excellent [International T
 
 ![alt tag](https://raw.github.com/mrmarkfrench/country-select-js/master/screenshot.png)
 
+## What is different on this fork?
+I made the fork so I could invert the fields (the main field - the one we apply the plugin - stores the country code, while the other one - the generated one - stores the country name)
 
 ## Table of Contents
 
@@ -80,6 +82,9 @@ Specify the countries to appear at the top of the list.
 Type: `Boolean` Default: `false`  
 Set the dropdown's width to be the same as the input. This is automatically enabled for small screens.
 
+**preferCode**
+Type: `Boolean` Default: `false`
+Invert the fields, so the field where we apply the country-select plugin will have the country code instead of the country name. Useful when you have an ng-model or some other integration (like geocomplete).
 
 ## Public Methods
 **destroy**  
