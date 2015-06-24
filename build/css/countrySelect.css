@@ -254,6 +254,9 @@
 .country-select .ad, .country-select .AD{background-position:-208px -121px}
 .country-select .np, .country-select .NP{background-position:-208px -132px}
 .country-select .ch, .country-select .CH{background-position:-208px -143px}
+.country-select .ENG {background-position: 0 -166px}
+.country-select .SCT {background-position: -96px -55px}
+.country-select .WLS {background-position: -16px -22px}
 
 .country-select {
 	position:relative;
