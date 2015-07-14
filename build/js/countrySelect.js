@@ -136,7 +136,7 @@
 			// Add the hidden input for the country code
 			this.countryCodeInput = $("#"+this.countryInput.attr("id")+"_code");
 			if (!this.countryCodeInput.length) {
-				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" />');
+				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" placeholder="'+this.countryInput.attr('placeholder')+'" />');
 				this.countryCodeInput.insertAfter(this.countryInput);
 			}
 
@@ -185,7 +185,10 @@
 			if (selectedCode) {
 				this.selectCountry(selectedCode);
 			}
-			if (!flagIsSet) {
+
+			var noDefaultOption = this.countryInput.attr('country-select-no-default') || this.countryCodeInput.attr('country-select-no-default');
+
+			if (!flagIsSet && !noDefaultOption) {
 				// flag is not set, so set to the default country
 				var defaultCountry;
 				// check the defaultCountry option, else fall back to the first in the list
@@ -427,14 +430,24 @@
 		},
 		// check if an element is visible within its container, else scroll until it is
 		_scrollTo: function(element) {
-			var container = this.countryList, containerHeight = container.height(), containerTop = container.offset().top, containerBottom = containerTop + containerHeight, elementHeight = element.outerHeight(), elementTop = element.offset().top, elementBottom = elementTop + elementHeight, newScrollTop = elementTop - containerTop + container.scrollTop();
-			if (elementTop < containerTop) {
-				// scroll up
-				container.scrollTop(newScrollTop);
-			} else if (elementBottom > containerBottom) {
-				// scroll down
-				var heightDifference = containerHeight - elementHeight;
-				container.scrollTop(newScrollTop - heightDifference);
+			if (element.length) {
+				var container = this.countryList,
+					containerHeight = container.height(),
+					containerTop = container.offset().top,
+					containerBottom = containerTop + containerHeight,
+					elementHeight = element.outerHeight(),
+					elementTop = element.offset().top,
+					elementBottom = elementTop + elementHeight,
+					newScrollTop = elementTop - containerTop + container.scrollTop();
+
+				if (elementTop < containerTop) {
+					// scroll up
+					container.scrollTop(newScrollTop);
+				} else if (elementBottom > containerBottom) {
+					// scroll down
+					var heightDifference = containerHeight - elementHeight;
+					container.scrollTop(newScrollTop - heightDifference);
+				}
 			}
 		},
 		// Replace any existing country name with the new one
