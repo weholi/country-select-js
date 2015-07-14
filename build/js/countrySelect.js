@@ -136,7 +136,8 @@
 			// Add the hidden input for the country code
 			this.countryCodeInput = $("#"+this.countryInput.attr("id")+"_code");
 			if (!this.countryCodeInput.length) {
-				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" placeholder="'+this.countryInput.attr('placeholder')+'" />');
+				var placeholderAttr = this.countryInput.attr('placeholder') ? ' placeholder="'+this.countryInput.attr('placeholder')+'" ' : '';
+				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" '+placeholderAttr+' />');
 				this.countryCodeInput.insertAfter(this.countryInput);
 			}
 
