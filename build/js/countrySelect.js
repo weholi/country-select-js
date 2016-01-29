@@ -136,8 +136,7 @@
 			// Add the hidden input for the country code
 			this.countryCodeInput = $("#"+this.countryInput.attr("id")+"_code");
 			if (!this.countryCodeInput.length) {
-				var placeholderAttr = this.countryInput.attr('placeholder') ? ' placeholder="'+this.countryInput.attr('placeholder')+'" ' : '';
-				this.countryCodeInput = $('<input type="hidden" id="'+this.countryInput.attr("id")+'_code" name="'+this.countryInput.attr("name")+'_code" value="" '+placeholderAttr+' />');
+				this.countryCodeInput = this._generateCountryCodeInput(this.countryInput);
 				this.countryCodeInput.insertAfter(this.countryInput);
 			}
 
@@ -155,6 +154,28 @@
 			this.countryList.removeClass("v-hide").addClass("hide");
 			// this is useful in lots of places
 			this.countryListItems = this.countryList.children(".country");
+		},
+		_generateCountryCodeInput: function(countryInput) {
+			var countryCodeInputName = countryInput.attr("name") || "plugin_country_select";
+			var pattern = /^.*\[(.*)\]$/g;
+			var countryCodeInputId = countryInput.attr("id") || "plugin_country_select_id";
+			countryCodeInputId = countryCodeInputId.replace(/[\[\]]]/g, '_');
+			countryCodeInputId = countryCodeInputId.endsWith('_') ? countryCodeInputId.substr(0, -1) : countryCodeInputId;
+			countryCodeInputId += '_code';
+			var matches = pattern.exec(countryCodeInputName);
+
+			if (matches == null) {
+				// use same name and just append the _code
+				countryCodeInputName += '_code';
+			} else {
+				// change a few things to convert names like
+				// data[country] into data[country_code]
+				var attrName = matches.length >= 2 ? matches[1] : "";
+				countryCodeInputName = countryCodeInputName.replace(attrName, attrName + '_code');
+			}
+
+			var placeholderAttr = countryInput.attr('placeholder') ? ' placeholder="'+countryInput.attr('placeholder')+'" ' : '';
+			return $('<input type="hidden" id="'+countryCodeInputId+'" name="' + countryCodeInputName + '" value="" '+placeholderAttr+' />');
 		},
 		// add a country <li> to the countryList <ul> container
 		_appendListItems: function(countries, className) {
